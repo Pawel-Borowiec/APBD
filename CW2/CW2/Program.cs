@@ -10,7 +10,7 @@ namespace CW2
 {
     class Program
     {
-        static List<string> wrongRows = new List<string>();
+        static List<string> errors = new List<string>();
         public static async Task Main(string[] args)
         {
             try
@@ -65,8 +65,15 @@ namespace CW2
             {
                 ErrorLogging(ex);
             }
+            finally
+            {
+                if (errors.Count != 0)
+                {
+                    ErrorLogging();
+                }
+            }
         }
-
+        // Obsługa formatu XML
         public static void proccesXml(string sourcePath, string targetPath)
         {
             string[] source = File.ReadAllLines(sourcePath);
@@ -89,6 +96,7 @@ namespace CW2
             );
             xml.Save(String.Concat(targetPath + "xmlout.xml"));
         }
+        // Obsługa formatu JSON
         public static async Task proccesJson(string sourcePath, string targetPath)
         {
             string[] source = File.ReadAllLines(sourcePath);
@@ -112,16 +120,26 @@ namespace CW2
                     temp.studies.mode = fields[3];
                     temp.mothersName = fields[7];
                     temp.fathersName = fields[8];
-                    uczelnia.studenci.Add(temp);
+                    if (!isAlreadyJson(uczelnia.studenci,temp))
+                    {
+                        uczelnia.studenci.Add(temp);
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nie dodano"+temp);
+                    }
+                    
                 }
                 else
                 {
-                    wrongRows.Add("Not enough arguments in row: "+x);
+                    errors.Add("Not enough arguments in row: "+x);
                 }
             }
             string response = JsonSerializer.Serialize(uczelnia);
             await File.WriteAllTextAsync(@"C:\Users\Paweł\Desktop\jsonout.json", response);
         }
+        // Tworzenie logów błędu
         public static void ErrorLogging(Exception ex)
         {
             string logpath = @"C:\Users\Paweł\Desktop\Log.txt";
@@ -138,6 +156,35 @@ namespace CW2
                 sw.WriteLine("End" + DateTime.Now);
             }
         }
-
+        public static void ErrorLogging()
+        {
+            string logpath = @"C:\Users\Paweł\Desktop\Log.txt";
+            if (!File.Exists(logpath))
+            {
+                File.Create(logpath).Dispose();
+            }
+            using (StreamWriter sw = File.AppendText(logpath))
+            {
+                foreach( string ex in errors)
+                {
+                    sw.WriteLine("Error logging");
+                    sw.WriteLine("Start" + DateTime.Now);
+                    sw.WriteLine("Error message: " + ex);
+                    sw.WriteLine("End" + DateTime.Now);
+                }
+            }
+        }
+        // Sprawdzenie czy dany student znajduje się już w bazie
+        public static bool isAlreadyJson(List<Student> list, Student temp)
+        {
+            foreach(Student x in list)
+            {
+                if (x.Index.Equals(temp.Index) && x.fName.Equals(temp.fName) && x.lName.Equals(temp.lName))
+                {
+                    errors.Add("Element " + JsonSerializer.Serialize(temp) + " sie powtarza");
+                }
+            }
+            return false;
+        }
     }
 }
