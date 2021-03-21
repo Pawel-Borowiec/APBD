@@ -6,46 +6,46 @@ using System.Threading.Tasks;
 
 namespace Crawler
 {
+    
     class Program
     {
+        static string REGEX = "[a-z]+[a-z0-9]*@[a-z0-9]+\\.[a-z]+\\.?[a-z]+";
         static HttpResponseMessage httpResponse;
         public static async Task Main(string[] args)
         {
 
             Console.WriteLine(args.Length);
-            if (args[0].Length >0) {
+            if (args.Length!=0) {
                 string url = args[0];
-                HttpClient httpClient = new HttpClient();
-                try
+                using (HttpClient httpClient = new HttpClient()) //wywołuje dispose w odpowiednim momencie tak by zwolniły się zasoby
                 {
-                    httpResponse = await httpClient.GetAsync(url);
-                    string response = await httpResponse.Content.ReadAsStringAsync();
-                    string emailPattern = "[a-z]+[a-z0-9]*@[a-z0-9]+\\.[a-z]+\\.?[a-z]+";
-
-                    List<string> result = new List<string>();
-                    foreach (Match match in Regex.Matches(response,emailPattern, RegexOptions.IgnoreCase))
+                    try
                     {
-                        result = addToResults(result,match.Value);
-                    }
-                    Console.WriteLine(result.Count);
+                        httpResponse = await httpClient.GetAsync(url);
 
-                    foreach (string x in result)
-                    {
-                        Console.WriteLine(x);
+                        if (httpResponse.IsSuccessStatusCode)
+                        {
+                            string response = await httpResponse.Content.ReadAsStringAsync();
+                            List<string> result = getResults(response);
+                            showResults(result);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("Niepoprawny adres URL");
+                        }
+
                     }
-                    Console.WriteLine(Regex.IsMatch(response, emailPattern) ? "Jest" : "Nie");
-                }
-                catch (HttpRequestException e)
-                {
-                    throw new ArgumentException("Przekazany argument nie jest adresem URL");
+                    catch (HttpRequestException e)
+                    {
+                        throw new Exception("Błąd w czasie pobierania strony");
+                    }
                 }
                 
             } else {
                 throw new ArgumentNullException("Nie przekazano argumentu");
             }
-            httpResponse.Dispose();
         }
-
+        // Dodanie do listy wyników nowego rekordu po uprzednim sprawdzeniu czy się nie powtarza
         static List<string> addToResults(List<String> lista, string newElement)
         {
             bool condition = true;
@@ -61,6 +61,32 @@ namespace Crawler
                 lista.Add(newElement);
             }
             return lista;
+        }
+        // Wypisanie wyników wyszukiwania bądź informacji o ich braku
+        static void showResults(List<string> emails)
+        {
+            if (emails.Count!=0)
+            {
+                Console.WriteLine("Znalezione unikalne adresy email:");
+                foreach (string x in emails)
+                {
+                    Console.WriteLine(x);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Nie znaleziono adresów email");
+            }
+        }
+        // Wyciągnięcie z źródła strony zawartych w nim maili
+        static List<string> getResults(string source)
+        {
+            List<String> temp = new List<string>();
+            foreach (Match match in Regex.Matches(source, REGEX, RegexOptions.IgnoreCase))
+            {
+                temp = addToResults(temp, match.Value);
+            }
+            return temp;
         }
     }
     
