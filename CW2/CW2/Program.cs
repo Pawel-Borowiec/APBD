@@ -15,9 +15,8 @@ namespace CW2
         {
             try
             {
-                string csvpath = @"C:\Users\Paweł\Desktop\dane.csv"; // @C:\Users\Paweł\Desktop\dane.csv
-                string targetPath = @"C:\Users\Paweł\Desktop\"; // @C:\Users\Paweł\Desktop\
-                //string json = Console.ReadLine(); // @C:\Users\Paweł\Desktop
+                string csvpath = Console.ReadLine(); // @C:\Users\Paweł\Desktop\dane.csv
+                string targetPath = Console.ReadLine(); // @C:\Users\Paweł\Desktop\
                 string format = Console.ReadLine(); // xml && json
                 switch (format)
                 {
@@ -76,9 +75,18 @@ namespace CW2
         // Obsługa formatu XML
         public static void proccesXml(string sourcePath, string targetPath)
         {
-            string[] source = File.ReadAllLines(sourcePath);
-            XElement xml = new XElement("Uczelnia",
-                from str in source
+            Console.WriteLine("Open XML");
+            List<string> temp = File.ReadAllLines(sourcePath).ToList();
+            List<string> source = new List<string>();
+            foreach (string x in temp)
+            {
+                if (!isAlreadyXml(source, x))
+                {
+                    source.Add(x);
+                }
+            }
+                XElement xml = new XElement("Uczelnia",
+                from string str in source
                 let fields = str.Split(',')
                 select new XElement("studenci",
                     new XAttribute("student_indexNumber", "s" + fields[4]),
@@ -124,12 +132,7 @@ namespace CW2
                     {
                         uczelnia.studenci.Add(temp);
 
-                    }
-                    else
-                    {
-                        Console.WriteLine("Nie dodano"+temp);
-                    }
-                    
+                    }                    
                 }
                 else
                 {
@@ -139,7 +142,7 @@ namespace CW2
             string response = JsonSerializer.Serialize(uczelnia);
             await File.WriteAllTextAsync(@"C:\Users\Paweł\Desktop\jsonout.json", response);
         }
-        // Tworzenie logów błędu
+        // Logi błędów z podniesionych wyjątków
         public static void ErrorLogging(Exception ex)
         {
             string logpath = @"C:\Users\Paweł\Desktop\Log.txt";
@@ -156,6 +159,7 @@ namespace CW2
                 sw.WriteLine("End" + DateTime.Now);
             }
         }
+        // Logi błędów z niewłaściwych rekordów
         public static void ErrorLogging()
         {
             string logpath = @"C:\Users\Paweł\Desktop\Log.txt";
@@ -182,6 +186,22 @@ namespace CW2
                 if (x.Index.Equals(temp.Index) && x.fName.Equals(temp.fName) && x.lName.Equals(temp.lName))
                 {
                     errors.Add("Element " + JsonSerializer.Serialize(temp) + " sie powtarza");
+                    return true;
+                }
+            }
+            return false;
+        }
+        // Sprawdzenie czy dany student już się pojawił dla formatu xml, teoretycznie powinna byc jedna funkcja dla obydwu formatów ale juz tak w praniu wyszlo, ze są dwie
+        public static bool isAlreadyXml(List<string> collection, string line)
+        {
+            string[] fields = line.Split(',');
+            foreach (string x in collection)
+            {
+                string[] temp = x.Split(',');
+                if (temp[4].Equals(fields[4]) && temp[0].Equals(fields[0]) && temp[1].Equals(fields[1]))
+                {
+                    errors.Add("Element " + line + " sie powtarza");
+                    return true;
                 }
             }
             return false;
