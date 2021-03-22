@@ -11,6 +11,7 @@ namespace CW2
     class Program
     {
         static List<string> errors = new List<string>();
+        static Dictionary<string, int> activeStudies = new Dictionary<string, int>();
         public static async Task Main(string[] args)
         {
             try
@@ -38,7 +39,6 @@ namespace CW2
                         }
                         break;
                     case "json":
-                        Console.WriteLine("Wybrano format JSON");
                         if (File.Exists(csvpath) && Directory.Exists(targetPath))
                         {
                             await proccesJson(csvpath, targetPath);
@@ -56,7 +56,6 @@ namespace CW2
                         }
                         break;
                     default:
-                        Console.WriteLine("Wybrano niepoprawny format");
                         throw new Exception("Unsupported format");
                 }
             }
@@ -75,16 +74,17 @@ namespace CW2
         // Obsługa formatu XML
         public static void proccesXml(string sourcePath, string targetPath)
         {
-            Console.WriteLine("Open XML");
             List<string> temp = File.ReadAllLines(sourcePath).ToList();
             List<string> source = new List<string>();
             foreach (string x in temp)
             {
-                if (!isAlreadyXml(source, x))
+                if (!isAlreadyXml(source, x) && x.Split(',').Length==9)
                 {
                     source.Add(x);
+                    handleStudies(x.Split(',')[2]);
                 }
             }
+            List<activeStudy> activeStudies = saveStudies();
                 XElement xml = new XElement("Uczelnia",
                 from string str in source
                 let fields = str.Split(',')
@@ -100,7 +100,13 @@ namespace CW2
                         new XElement("name", fields[2]),
                         new XElement("mode", fields[3])
                     )
-                )
+                ),
+                from activeStudy x in activeStudies
+                select new XElement("activeStudies",
+                    new XElement("name", x.name),
+                    new XElement("numberOfStudents", x.numberOfStudents)
+                    )
+
             );
             xml.Save(String.Concat(targetPath + "xmlout.xml"));
         }
@@ -131,6 +137,7 @@ namespace CW2
                     if (!isAlreadyJson(uczelnia.studenci,temp))
                     {
                         uczelnia.studenci.Add(temp);
+                        handleStudies(fields[2]);
 
                     }                    
                 }
@@ -139,6 +146,8 @@ namespace CW2
                     errors.Add("Not enough arguments in row: "+x);
                 }
             }
+
+            uczelnia.activeStudies = saveStudies();
             string response = JsonSerializer.Serialize(uczelnia);
             await File.WriteAllTextAsync(@"C:\Users\Paweł\Desktop\jsonout.json", response);
         }
@@ -190,6 +199,33 @@ namespace CW2
                 }
             }
             return false;
+        }
+        // Podliczenie studiów
+        public static void handleStudies(string studies)
+        {
+            
+            if (activeStudies.ContainsKey(studies))
+            {
+                activeStudies[studies] += 1;
+            }
+            else
+            {
+                activeStudies.Add(studies, 1);
+            }
+
+        }
+        // Przeformatownaie słownika na odpowiedni format
+        public static List<activeStudy> saveStudies()
+        {
+            List<activeStudy> tempList = new List<activeStudy>();
+            foreach(KeyValuePair<string, int> kvp in activeStudies)
+            {
+                activeStudy temp = new activeStudy();
+                temp.name = kvp.Key;
+                temp.numberOfStudents = kvp.Value;
+                tempList.Add(temp);
+            }
+            return tempList;
         }
         // Sprawdzenie czy dany student już się pojawił dla formatu xml, teoretycznie powinna byc jedna funkcja dla obydwu formatów ale juz tak w praniu wyszlo, ze są dwie
         public static bool isAlreadyXml(List<string> collection, string line)

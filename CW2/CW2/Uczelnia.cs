@@ -10,7 +10,8 @@ namespace CW2
     {
         public DateTime createTime { get; set; }
 
-        public string author { get; set; } 
+        public string author { get; set; }
         public List<Student> studenci { get; set; }
+        public List<activeStudy> activeStudies { get; set; }
     }
 }
