@@ -4,9 +4,9 @@
 ## Technologie użyte podczas realizacji tego przedmiotu:
 * C#
 
-##Spis Treścci
+## Spis Treścci
 * [Zadanie pierwsze - Crawler](#crawler)
-* [Zadanie drugie - parsowanie CSV](#parsowanie-csv)
+* [Zadanie drugie - Parsowanie CSV](#parsowanie-csv)
 
 ## Crawler
 Zadanie polegające na pobraniu adresu strony internetowej poprzez parametry programu, znalezieniu za pomocą wyrażenia regularnego unikalnych maili w źródle strony oraz wyświetleniu ich
