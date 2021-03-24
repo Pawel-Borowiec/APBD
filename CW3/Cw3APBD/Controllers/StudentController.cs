@@ -70,8 +70,9 @@ namespace Cw3APBD.Controllers
         [HttpPost]
         public IActionResult CreateStudent(Student student)
         {
+            string temp =_studentService.parseStudentToString(student);
 
-            return Ok();
+            return Ok(student);
         }
         //HttpPut
         [HttpPut]
