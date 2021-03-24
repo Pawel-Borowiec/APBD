@@ -27,6 +27,7 @@ namespace TestProject1
             temp.Index = "s18986";
             temp.fName = "Adam";
             list.Add(temp);
+            Studies
 
    
 

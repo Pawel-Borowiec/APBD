@@ -4,7 +4,7 @@
 ## Technologie użyte podczas realizacji tego przedmiotu:
 * C#
 
-## Spis Treścci
+## Spis Treści
 * [Zadanie pierwsze - Crawler](#crawler)
 * [Zadanie drugie - Parsowanie CSV](#parsowanie-csv)
 
