@@ -13,7 +13,7 @@ namespace Cw3APBD.Controllers
     {
 
         studentService _studentService = new studentService();
-
+        // get student with certain id in database ( row number ) - nie było w treśći zadania ale jak już zrobiłęm to uznałem, że nie ma co usuwać
         [HttpGet("{IndexNumber}")]
         public async Task<IActionResult> GetStudents(int indexNumber)
         {
@@ -31,7 +31,7 @@ namespace Cw3APBD.Controllers
             }
         }
 
-        //HttpPatch 
+        // get all students from database or take only student with certain indexNumber
         [HttpGet]
         public IActionResult GetStudents(string indexNumber = "")
         {
@@ -54,23 +54,24 @@ namespace Cw3APBD.Controllers
                             return Ok(x);
                         }
                     }
-                    return Ok("Nie ma takiego studenta w bazie");
+                    return BadRequest("Nie ma takiego studenta w bazie");
                 }
             }
             else
             {
-                return Ok("Brak wczytania danych");
+                return BadRequest("Brak wczytania danych");
             }
 
             //2xx - ok
             //3xx - blad po stronie klienta
             //5xx - wewnętrzny błąd serwera // internal server error
         }
-        //HttpPost
+        //HttpPost - wstawienie rekordów. Przy potwarzającycm się ID nie dodaj do bazy
         [HttpPost]
         public IActionResult CreateStudent(Student student)
         {
             string temp =_studentService.parseStudentToString(student);
+            _studentService.saveToDatabase(temp);
 
             return Ok(student);
         }
@@ -78,20 +79,21 @@ namespace Cw3APBD.Controllers
         [HttpPut]
         public IActionResult UpdateStudent(Student student)
         {
-            //Put /api/students/s1234 - aktualizacja wszystkich zasobów
+            if(_studentService.isAlreadyInDatabase(student))
+            {
+                _studentService.updateStudentInDatabase(student);
+            }
 
-            return Ok();
+            return Ok("Wykonano update");
         }
-        //HttpDelete
-        [HttpDelete]
-        public IActionResult DeleteStudent(Student student)
+        //HttpDelete - 
+        [HttpDelete("{IndexNumber}")]
+        public IActionResult DeleteStudent(string indexNumber)
         {
-            //Delete /api/students/s1234 - usuwanie studenta
+            _studentService.deleteStudent(indexNumber);
 
-            return Ok();
+            return Ok("Wykonano delete");
         }
-
-        //https://localhost:44339/api/students/?indexNumber=s1234
 
 
     }
