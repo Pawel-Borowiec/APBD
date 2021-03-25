@@ -11,23 +11,20 @@ namespace Cw3APBD.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+        readonly studentService _studentService = new studentService();
 
-        studentService _studentService = new studentService();
         // get student with certain id in database ( row number ) - nie było w treśći zadania ale jak już zrobiłęm to uznałem, że nie ma co usuwać
-        [HttpGet("{IndexNumber}")]
-        public async Task<IActionResult> GetStudents(int indexNumber)
+        [HttpGet("{rowNumber}")]
+        public IActionResult GetStudents(int rowNumber)
         {
-            List<string> data;
-            string sourcePath = @".\Datas\students.csv";
-            if (System.IO.File.Exists(sourcePath))
+            if (_studentService.isCsvExist())
             {
-                data = new List<string>(await System.IO.File.ReadAllLinesAsync(sourcePath));
-                var students = Student.parseFromCsv(data);
-                return Ok(students[indexNumber-1]);
+                var students = _studentService.getAllStudents();
+                return Ok(students[rowNumber-1]);
             }
             else
             {
-                return Ok("Brak wczytania danych");
+                return StatusCode(404,"Nie odnaleziono pliku z danymi");
             }
         }
 
@@ -35,18 +32,14 @@ namespace Cw3APBD.Controllers
         [HttpGet]
         public IActionResult GetStudents(string indexNumber = "")
         {
-            List<string> data;
-            string sourcePath = @".\Datas\students.csv";
-            if (System.IO.File.Exists(sourcePath))
+            if (_studentService.isCsvExist())
             {
                 if (indexNumber.Equals(""))
                 {
-                    data = new List<string>(System.IO.File.ReadAllLines(sourcePath));
-                    return Ok(Student.parseFromCsv(data));
+                    return Ok(_studentService.getAllStudents());
                 } else
                 {
-                    data = new List<string>(System.IO.File.ReadAllLines(sourcePath));
-                    var temp = Student.parseFromCsv(data);
+                    var temp = _studentService.getAllStudents();
                     foreach(Student x in temp)
                     {
                         if (x.index.Equals(indexNumber))
@@ -54,17 +47,13 @@ namespace Cw3APBD.Controllers
                             return Ok(x);
                         }
                     }
-                    return BadRequest("Nie ma takiego studenta w bazie");
+                    return StatusCode(404,"Nie ma takiego studenta w bazie");
                 }
             }
             else
             {
-                return BadRequest("Brak wczytania danych");
+                return StatusCode(404,"Błąd wczytania danych z bazy");
             }
-
-            //2xx - ok
-            //3xx - blad po stronie klienta
-            //5xx - wewnętrzny błąd serwera // internal server error
         }
         //HttpPost - wstawienie rekordów. Przy potwarzającycm się ID nie dodaj do bazy
         [HttpPost]
@@ -82,17 +71,31 @@ namespace Cw3APBD.Controllers
             if(_studentService.isAlreadyInDatabase(student))
             {
                 _studentService.updateStudentInDatabase(student);
+                return Ok(student);
+            }
+            else
+            {
+                string temp = _studentService.parseStudentToString(student);
+                _studentService.saveToDatabase(temp);
+                return StatusCode(201,student);
             }
 
-            return Ok("Wykonano update");
+            
         }
         //HttpDelete - 
         [HttpDelete("{IndexNumber}")]
         public IActionResult DeleteStudent(string indexNumber)
         {
-            _studentService.deleteStudent(indexNumber);
-
-            return Ok("Wykonano delete");
+            if (_studentService.isAlreadyInDatabase(indexNumber))
+            {
+                _studentService.deleteStudent(indexNumber);
+                return Ok("Wykonano delete");
+            }
+            else
+            {
+                return StatusCode(404, "Nie ma takiego studenta w bazie");
+            }
+            
         }
 
 
