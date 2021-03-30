@@ -14,14 +14,16 @@ namespace CW4.Controllers
     public class AnimalsController : ControllerBase
     {
         const string ConString = "Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18986;Integrated Security=True";
+
         [HttpGet]
-        public IActionResult GetAnimals()
+        public IActionResult GetAnimals(string orderBy = "name")
         {
 
             SqlConnection con = new SqlConnection(ConString);
             SqlCommand com = new SqlCommand();
 
-            com.CommandText = "SELECT * FROM Animal";
+
+            com.CommandText = "SELECT * FROM Animal order by " + orderBy;
             com.Connection = con;
 
             con.Open();
@@ -33,12 +35,37 @@ namespace CW4.Controllers
             {
                 list.Add(new Animal
                 {
-                    Name = dr["Name"].ToString()
+                    Name = dr["Name"].ToString(),
+                    Description = dr["Description"].ToString(),
+                    Category = dr["Category"].ToString(),
+                    Area = dr["Area"].ToString()
                 });
             }
 
             con.Dispose();
             return Ok(list);
+        }
+
+        [HttpPost]
+        public IActionResult AddAnimal(Animal animal)
+        {
+            SqlConnection con = new SqlConnection(ConString);
+            SqlCommand com = new SqlCommand();
+
+            com.CommandText = "INSERT INTO Animal (Name, Description, Category, Area) VALUES('"+animal.Name+ "', '" + animal.Description + "', '" + animal.Category + "', '" + animal.Area + "'); ";
+            return Ok();
+        }
+
+        [HttpPut]
+        public IActionResult UpdateAnimal()
+        {
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteAnimal()
+        {
+            return Ok();
         }
     }
 }
