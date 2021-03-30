@@ -6,11 +6,7 @@ namespace LegacyApp
     {
         //AddUser_ShouldAddUserCorrectly
         //AddUser_ShouldFail_IncorrectEmail
-        /*
-         * TODO
-        Repository i coś tam jeszcze silne zależności
-        Dodanie testów
-         */
+ 
 
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
@@ -108,20 +104,20 @@ namespace LegacyApp
             }
             else if (client.Name == "ImportantClient")
             {
-                SetCardProperties(user, 2);
+                SetCardProperties(user, 2, new UserCreditService());
             }
             else
             {
-                SetCardProperties(user, 1);
+                SetCardProperties(user, 1, new UserCreditService());
             }
         }
         // Przypisanie karcie limitu 
-        public void SetCardProperties(User user,int value)
+        public void SetCardProperties(User user,int value, UserCreditService userCreditService)
         {
-            using var userCreditService = new UserCreditService();
             int creditLimit = userCreditService.GetCreditLimit(user.FirstName, user.LastName, user.DateOfBirth);
             creditLimit *= value;
             user.CreditLimit = creditLimit;
+            userCreditService.Dispose();
         }
         // Sprawdzenie czy klient posiada zdoność kredytową
         public bool HasEnoughLimit(User user)
