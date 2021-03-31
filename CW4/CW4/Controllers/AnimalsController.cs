@@ -1,4 +1,5 @@
 ﻿using CW4.Models;
+using CW4.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,59 +14,40 @@ namespace CW4.Controllers
     [ApiController]
     public class AnimalsController : ControllerBase
     {
-        const string ConString = "Data Source=db-mssql16.pjwstk.edu.pl;Initial Catalog=s18986;Integrated Security=True";
+        private IDBService _dBService;
+
+        public AnimalsController(IDBService dBService)
+        {
+            _dBService = dBService;
+        }
 
         [HttpGet]
         public IActionResult GetAnimals(string orderBy = "name")
         {
 
-            SqlConnection con = new SqlConnection(ConString);
-            SqlCommand com = new SqlCommand();
-
-
-            com.CommandText = "SELECT * FROM Animal order by " + orderBy;
-            com.Connection = con;
-
-            con.Open();
-
-            SqlDataReader dr = com.ExecuteReader();
-            var list = new List<Animal>();
-
-            while (dr.Read())
-            {
-                list.Add(new Animal
-                {
-                    Name = dr["Name"].ToString(),
-                    Description = dr["Description"].ToString(),
-                    Category = dr["Category"].ToString(),
-                    Area = dr["Area"].ToString()
-                });
-            }
-
-            con.Dispose();
+            IEnumerable<Animal> list = _dBService.GetAnimals(orderBy);
             return Ok(list);
         }
 
         [HttpPost]
         public IActionResult AddAnimal(Animal animal)
         {
-            SqlConnection con = new SqlConnection(ConString);
-            SqlCommand com = new SqlCommand();
-
-            com.CommandText = "INSERT INTO Animal (Name, Description, Category, Area) VALUES('"+animal.Name+ "', '" + animal.Description + "', '" + animal.Category + "', '" + animal.Area + "'); ";
-            return Ok();
+            _dBService.AddAnimal(animal);
+            return Ok(animal);
         }
 
-        [HttpPut]
-        public IActionResult UpdateAnimal()
+        [HttpPut("{ID}")]
+        public IActionResult UpdateAnimal(Animal animal, int Id)
         {
-            return Ok();
+            _dBService.UpdateAnimal(animal, Id);
+            return Ok(animal);
         }
 
-        [HttpDelete]
-        public IActionResult DeleteAnimal()
+        [HttpDelete("{Id}")]
+        public IActionResult DeleteAnimal(int Id)
         {
-            return Ok();
+            _dBService.DeleteAnimal(Id);
+            return Ok("Usunięto poprawnie");
         }
     }
 }
