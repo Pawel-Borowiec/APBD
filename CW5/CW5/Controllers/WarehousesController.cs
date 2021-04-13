@@ -29,17 +29,16 @@ namespace CW5.Controllers
         [HttpPost]
         public IActionResult AddOrder(OrderRequest request)
         {
-            switch (_service.AddProducts(request))
+            try
             {
-                case 1:
-                    return Ok("Udana próba");
-                case 2:
-                    return StatusCode(400, "Product/Hurtowania o podanym id nie istnieje");
-                case 3:
-                    return StatusCode(400, "Nie ma odpowiedniego zlecenia");
-                default:
-                    return BadRequest("Nieznany problem");
+                int response = _service.AddProducts(request);
+                return Ok(response);
             }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+            
         }
     }
 }
