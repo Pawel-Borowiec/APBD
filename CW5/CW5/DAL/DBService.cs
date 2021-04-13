@@ -31,7 +31,13 @@ namespace CW5.DAL
             com.Parameters.AddWithValue("@CreatedAt", request.CreateAt);
 
             con.Open();
-            com.ExecuteNonQuery();
+            try
+            {
+                com.ExecuteNonQuery();
+            }catch( SqlException e)
+            {
+                return 0;
+            }
             con.Close();
             return 1;
         }
