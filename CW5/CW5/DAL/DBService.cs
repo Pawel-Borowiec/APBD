@@ -4,12 +4,15 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CW5.DAL
 {
+    //TODO
+    // Async do procedury i insertów do bazy
     public class DBService : IDBService
     {
 
@@ -31,13 +34,10 @@ namespace CW5.DAL
             com.Parameters.AddWithValue("@CreatedAt", request.CreateAt);
 
             con.Open();
-            try
-            {
-                com.ExecuteNonQuery();
-            }catch( SqlException e)
-            {
-                return 0;
-            }
+            //DbTransaction dbTransaction = await con.BeginTransactionAsync();
+            //com.Transaction = (SqlTransaction)dbTransaction;
+
+            com.ExecuteNonQuery();
             con.Close();
             return 1;
         }

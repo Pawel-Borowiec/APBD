@@ -19,7 +19,7 @@ namespace CW5.Controllers
         {
             _service = dBService;
         }
-
+        [HttpPost]
         public IActionResult AddWithProcedure(OrderRequest request)
         {
             
