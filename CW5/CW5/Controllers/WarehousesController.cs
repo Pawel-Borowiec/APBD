@@ -20,7 +20,7 @@ namespace CW5.Controllers
         {
             _service = dBService;
         }
-         
+
         [HttpGet]
         public IActionResult GetAllOWarehouses()
         {
@@ -38,7 +38,6 @@ namespace CW5.Controllers
             {
                 return BadRequest(e.Message);
             }
-            
         }
     }
 }

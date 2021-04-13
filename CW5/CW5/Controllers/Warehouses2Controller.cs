@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CW5.DAL;
+using CW5.Requests;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,18 @@ namespace CW5.Controllers
     [ApiController]
     public class Warehouses2Controller : ControllerBase
     {
-        public IActionResult addOder()
+        private readonly IDBService _service;
+
+        public Warehouses2Controller(IDBService dBService)
         {
-            return Ok();
+            _service = dBService;
+        }
+
+        public IActionResult AddWithProcedure(OrderRequest request)
+        {
+            
+
+            return Ok(_service.AddWithProcedure(request));
         }
     }
 }

@@ -3,6 +3,7 @@ using CW5.Requests;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,8 +19,22 @@ namespace CW5.DAL
         {
             _configuration = configuration;
         }
+        //Dodanie z użyciem procedury
+        public int AddWithProcedure(OrderRequest request)
+        {
+            using var con = new SqlConnection(_configuration.GetConnectionString("ProductionDb"));
+            using var com = new SqlCommand("AddProductToWarehouse", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@IdProduct", request.IdProduct);
+            com.Parameters.AddWithValue("@IdWarehouse", request.IdWarehouse);
+            com.Parameters.AddWithValue("@Amount", request.Amount);
+            com.Parameters.AddWithValue("@CreatedAt", request.CreateAt);
 
-
+            con.Open();
+            com.ExecuteNonQuery();
+            con.Close();
+            return 1;
+        }
         public int AddProducts(OrderRequest request)
         {
             

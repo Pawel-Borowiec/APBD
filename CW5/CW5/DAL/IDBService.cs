@@ -12,5 +12,7 @@ namespace CW5.DAL
     public int AddProducts(OrderRequest request);
     public IEnumerable<Warehouse> getAllWarehouses();
     public IEnumerable<Product> GetAllProducts();
+    public int AddWithProcedure(OrderRequest request);
+
     }
 }
