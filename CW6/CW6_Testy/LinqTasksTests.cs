@@ -51,5 +51,38 @@ namespace LinqTutorials.Tests
 
             Assert.AreEqual(LinqTasks.Emps.ToList()[1],LinqTasks.Task9());
         }
+        [TestMethod()]
+        public void Task11Test()
+        {
+            var output = LinqTasks.Task11().ToList();
+            Assert.IsTrue(output.Count == 2);
+            Assert.AreEqual(output[0].ToString(),"{ name = Research, numOfEmployes = 3 }");
+            Assert.AreEqual(output[1].ToString(), "{ name = Human Resources, numOfEmployes = 6 }");
+            Console.WriteLine(output[0].ToString());
+        }
+        [TestMethod()]
+        public void Task12Test()
+        {
+            List<Emp> emps = LinqTasks.Emps.ToList();
+            List<Emp> output = LinqTasks.Task12().ToList();
+            Assert.IsTrue(output.Count == 2);
+            Assert.AreEqual(output[0], emps[0]);
+            Assert.AreEqual(output[1], emps[1]);
+        }
+        [TestMethod()]
+        public void Task13Test()
+        {
+            Assert.IsTrue(10 == LinqTasks.Task13(new int[] { 1, 1, 1, 1, 1, 1, 10, 1, 1, 1, 1 }));
+            Assert.IsTrue(20 == LinqTasks.Task13(new int[] { 1, 4, 1, 20, 4, 5, 20, 5, 1, 20, 1 }));
+            Assert.IsTrue(6 == LinqTasks.Task13(new int[] { 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 6 }));
+        }
+        [TestMethod()]
+        public void Task14Test()
+        {
+            List<Dept> output = LinqTasks.Task14().ToList();
+            Assert.IsTrue(1 == output.Count());
+            Assert.AreEqual("IT", output[0].Dname);
+            Assert.AreEqual("Los Angeles", output[0].Loc);
+        }
     }
 }

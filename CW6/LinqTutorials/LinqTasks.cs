@@ -295,7 +295,7 @@ namespace LinqTutorials
         public static IEnumerable<object> Task11()
         {
             IEnumerable<object> result = Depts.Join(Emps, x => x.Deptno, y => y.Deptno, (x, y) => new { Depts = x, Emps = y })
-                .GroupBy(x => x.Depts.Deptno)
+                .GroupBy(x => x.Depts.Dname)
                 .Where(x => x.Count() > 1)
                 .Select(x => new { name = x.Key, numOfEmployes = x.Count() })
                 .ToList();
@@ -311,7 +311,7 @@ namespace LinqTutorials
         /// </summary>
         public static IEnumerable<Emp> Task12()
         {
-            IEnumerable<Emp> result = null;
+            IEnumerable<Emp> result = CustomExtensionMethods.GetEmpsWithSubordinates(Emps);
             return result;
         }
 
@@ -324,8 +324,10 @@ namespace LinqTutorials
         /// </summary>
         public static int Task13(int[] arr)
         {
-            int result = 0;
-            //result=
+            int result = arr.GroupBy(x => x)
+                .Where(x => x.Count() % 2 == 1)
+                .Select(x => x.Key)
+                .First();
             return result;
         }
 
@@ -335,8 +337,17 @@ namespace LinqTutorials
         /// </summary>
         public static IEnumerable<Dept> Task14()
         {
-            IEnumerable<Dept> result = null;
-            //result =
+            var temp = Depts.Join(Emps, x => x.Deptno, y => y.Deptno, (x, y) => new { Depts = x, Emps = y })
+                .Select(x => x.Depts.Deptno)
+                .GroupBy(x => x)
+                .Where(x => x.Count() != 0)
+                .Where(x => x.Count() != 5)
+                .Select(x => x.Key)
+                .ToList();
+
+            IEnumerable<Dept> result = Depts.Where(x => !temp.Contains(x.Deptno))
+                .OrderBy(x => x.Dname)
+                .ToList();
             return result;
         }
     }
@@ -346,7 +357,11 @@ namespace LinqTutorials
         //Put your extension methods here
         public static IEnumerable<Emp> GetEmpsWithSubordinates(this IEnumerable<Emp> emps)
         {
-            var result = emps.Where(e => emps.Any(e2 => e2.Mgr == e.Mgr)).OrderBy(e => e.Ename).ThenByDescending(e => e.Salary);
+            
+            var result = emps.Where(x => emps.Any(y => y.Mgr == x))
+                .OrderBy(x => x.Ename)
+                .OrderBy(x => x.Salary)
+                .ToList();
             return result;
         }
 
