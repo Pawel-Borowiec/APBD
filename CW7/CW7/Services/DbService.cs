@@ -19,7 +19,7 @@ namespace CW7.Services
             _context = new s18986Context();
         }
 
-        public int AddClientToTrip(AddClientToTripRequest request, int idTrip)
+        public async Task<int> AddClientToTrip(AddClientToTripRequest request, int idTrip)
         {
             int clientId = 0;
             //Czy w bazie danych istnieje klient o podanym id
@@ -55,8 +55,8 @@ namespace CW7.Services
                 RegisteredAt = DateTime.Now,
                 PaymentDate = new DateTime(int.Parse(dateElements[2]), int.Parse(dateElements[0]), int.Parse(dateElements[1]))
             };
-            _context.ClientTrips.Add(clientTrip);
-            _context.SaveChanges();
+            _context.ClientTrips.AddAsync(clientTrip);
+            _context.SaveChangesAsync();
         }
         private void HandleClient(int clientId, AddClientToTripRequest request)
         {
@@ -72,7 +72,7 @@ namespace CW7.Services
             else
             {
                 clientId = _context.Clients.Max(x => x.IdClient) + 1;
-                _context.Clients.Add(new Client
+                _context.Clients.AddAsync(new Client
                 {
                     IdClient = clientId,
                     FirstName = request.FirstName,
@@ -84,9 +84,9 @@ namespace CW7.Services
             }
         }
 
-        public int DeleteClient(int idClient)
+        public async Task<int> DeleteClient(int idClient)
         {
-            int temp = _context.ClientTrips.Where(x => x.IdClient == idClient).Count();
+            int temp = await _context.ClientTrips.Where(x => x.IdClient == idClient).CountAsync();
             if (temp > 0)
             {
                 return 1;
@@ -94,21 +94,21 @@ namespace CW7.Services
             else
             {
                 _context.Clients.Remove(_context.Clients.Where(x => x.IdClient == idClient).FirstOrDefault());
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return 0;
             }
         }
 
-        public IEnumerable<TripResponse> GetSortedTrips()
+        public async Task<IEnumerable<TripResponse>> GetSortedTrips()
         {
             //Pobranie całości danych z bazy
-            var temp = _context.Trips
+            var temp = await _context.Trips
                .Include(x => x.CountryTrips)
                .ThenInclude(x => x.IdCountryNavigation)
                .Include(y => y.ClientTrips)
                .ThenInclude(y => y.IdClientNavigation)
                .OrderByDescending(y => y.DateFrom)
-               .ToList();
+               .ToListAsync();
             //Przypisanie danych do odpowiedniego formatu
             var result = new List<TripResponse>();
             foreach (var a in temp)
