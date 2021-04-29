@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CW8.DAL;
+using CW8.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,25 +13,31 @@ namespace CW8.Controllers
     [ApiController]
     public class DoctorsController : ControllerBase
     {
+        private readonly IDbService _service;
+
+        public DoctorsController(IDbService service)
+        {
+            _service = service;
+        }
         [HttpGet]
         public IActionResult GetDoctors()
         {
-            return Ok();
+            return Ok(_service.GetDoctors());
         }
         [HttpPost]
-        public IActionResult AddDoctor()
+        public IActionResult AddDoctor(Doctor doctor)
         {
-            return Ok();
+            return Ok(_service.AddDoctor(doctor));
         }
-        [HttpPut]
-        public IActionResult UpdateDoctor()
+        [HttpPut("{id}")]
+        public IActionResult UpdateDoctor(Doctor doctor, int id)
         {
-            return Ok();
+            return Ok(_service.UpdateDoctor(doctor));
         }
-        [HttpDelete]
-        public IActionResult DeleteDoctor()
+        [HttpDelete("{id}")]
+        public IActionResult DeleteDoctor(int id)
         {
-            return Ok();
+            return Ok(_service.DeleteDoctor(id));
         }
     }
 }

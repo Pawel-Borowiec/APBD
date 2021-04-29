@@ -12,7 +12,8 @@ namespace CW8.DAL
     {
         public IEnumerable<Doctor> GetDoctors();
         public int AddDoctor(Doctor doctor);
-        public int DeleteDoctor(Doctor doctor);
-        public int UpdateDoctor(Doctor doctorm int Id);
+        public int DeleteDoctor(int Id);
+        public int UpdateDoctor(Doctor doctor);
+        public Prescription GetPrescription(int Id);
     }
 }
