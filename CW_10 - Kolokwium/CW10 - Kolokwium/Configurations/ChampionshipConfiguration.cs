@@ -14,6 +14,17 @@ namespace CW10___Kolokwium.Configurations
         {
             builder.HasKey(key => key.idChampionship);
             builder.Property(x => x.OfficialName).HasMaxLength(100);
+            var colection = new List<Championship>
+            {
+                new Championship
+                {
+                    idChampionship =1,
+                    OfficialName = "euro",
+                    Year = 2012
+                }
+            };
+            builder.HasData(colection);
         }
+
     }
 }
