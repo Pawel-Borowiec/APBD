@@ -15,11 +15,11 @@ namespace CW8.Configurations
             builder.HasKey(key => key.IdPrescription);
             builder
                 .HasOne(x => x.Patient)
-                .WithMany()
+                .WithMany(y => y.Prescriptions)
                 .HasForeignKey(x => x.IdPatient);
             builder
                 .HasOne(x => x.Doctor)
-                .WithMany()
+                .WithMany(y => y.Prescriptions)
                 .HasForeignKey(x => x.IdDoctor);
 
             var prescriptions = new List<Prescription>

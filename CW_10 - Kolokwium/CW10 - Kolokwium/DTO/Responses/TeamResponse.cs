@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace CW10___Kolokwium.DTO.Responses
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TeamResponse : ControllerBase
+    public class TeamResponse
     {
+        public int idTeam { get; set; }
+        public string TeamName { get; set; }
+        public int MaxAge { get; set; }
+
+        public float Score { get; set; }
     }
 }

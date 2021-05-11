@@ -12,11 +12,11 @@ namespace CW8.Configurations
             builder.HasKey(key => new { key.IdMedicament, key.IdPrescription });
             builder
                 .HasOne(x => x.Prescription)
-                .WithMany()
+                .WithMany(y => y.Prescription_Medicaments)
                 .HasForeignKey(x => x.IdPrescription);
             builder
                 .HasOne(x => x.Medicament)
-                .WithMany()
+                .WithMany(y => y.Prescription_Medicaments)
                 .HasForeignKey(x => x.IdMedicament);
             builder.Property(x => x.Dose).IsRequired();
             builder.Property(x => x.Details).HasMaxLength(100);

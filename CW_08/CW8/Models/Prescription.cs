@@ -16,5 +16,6 @@ namespace CW8.Models
         public int IdDoctor { get; set; }
         public virtual Patient Patient { get; set; }
         public virtual Doctor Doctor { get; set; }
+        public virtual ICollection<Prescription_Medicament> Prescription_Medicaments { get; set; } = new HashSet<Prescription_Medicament>();
     }
 }

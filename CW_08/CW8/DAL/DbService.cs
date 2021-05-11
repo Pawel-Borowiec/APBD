@@ -42,9 +42,12 @@ namespace CW8.DAL
 
         public Prescription GetPrescription(int Id)
         {
-            Prescription prescription = _context.Prescriptions.Where(x => x.IdPrescription == Id).FirstOrDefault();
-            prescription.Doctor = _context.Doctors.Where(x => x.IdDoctor == prescription.IdDoctor).FirstOrDefault();
-            prescription.Patient = _context.Patients.Where(x => x.IdPatient == prescription.IdPatient).FirstOrDefault();
+            Prescription prescription = _context.Prescriptions
+                .Include(x => x.Doctor)
+                .Include(x => x.Patient)
+                .Include(x => x.Prescription_Medicaments)
+                .ThenInclude(x => x.Medicament)
+                .Where(x => x.IdPrescription == Id).FirstOrDefault();
             return prescription;
         }
 

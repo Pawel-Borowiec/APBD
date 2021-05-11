@@ -22,6 +22,17 @@ namespace CW10___Kolokwium.Configurations
                 .WithMany()
                 .HasForeignKey(x => x.idTeam);
             builder.Property(x => x.Comment).HasMaxLength(300);
+
+            var colection = new List<PlayerTeam>
+            {
+                new PlayerTeam
+                {
+                    idPlayerTeam = 1,
+                    idPlayer =1,
+                    idTeam =1
+                }
+            };
+            builder.HasData(colection);
         }
     }
 }

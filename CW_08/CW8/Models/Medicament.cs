@@ -11,5 +11,6 @@ namespace CW8.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
+        public virtual ICollection<Prescription_Medicament> Prescription_Medicaments { get; set; } = new HashSet<Prescription_Medicament>();
     }
 }

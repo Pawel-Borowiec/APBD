@@ -14,6 +14,17 @@ namespace CW10___Kolokwium.Configurations
         {
             builder.HasKey(key => key.idTeam);
             builder.Property(x => x.TeamName).HasMaxLength(30);
+            var teams = new List<Team>
+            {
+                new Team
+                {
+                    idTeam = 1,
+                    MaxAge = 18,
+                    TeamName = "Legia"
+                }
+            };
+            builder.HasData(teams);
         }
+
     }
 }

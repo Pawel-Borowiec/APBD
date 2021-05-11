@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CW8
@@ -28,11 +29,15 @@ namespace CW8
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IDbService, DbService>();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CW8", Version = "v1" });
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

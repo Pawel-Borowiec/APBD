@@ -21,6 +21,17 @@ namespace CW10___Kolokwium.Configurations
                 .HasOne(x => x.Championship)
                 .WithMany()
                 .HasForeignKey(x => x.idChampionship);
+            var colection = new List<Championship_Team>
+            {
+                new Championship_Team
+                {
+                    idChampionshipTeam = 1,
+                    idChampionship = 1,
+                    idTeam = 1,
+                    Score = 1
+                }
+            };
+            builder.HasData(colection);
         }
     }
 }

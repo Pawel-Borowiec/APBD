@@ -14,6 +14,18 @@ namespace CW10___Kolokwium.Configurations
             builder.HasKey(key => key.IdPlayer);
             builder.Property(x => x.FirstName).HasMaxLength(30);
             builder.Property(x => x.LastName).HasMaxLength(50);
+
+            var players = new List<Player>()
+            {
+                new Player
+                {
+                    IdPlayer = 1,
+                    FirstName = "Josef",
+                    LastName = "Zbaznik",
+                    DateOfBirth = DateTime.Now
+                }
+            };
+            builder.HasData(players);
         }
     }
 }

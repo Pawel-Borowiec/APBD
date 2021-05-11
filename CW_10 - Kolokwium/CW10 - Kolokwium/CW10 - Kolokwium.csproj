@@ -16,8 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="DTO\Responses\" />
     <Folder Include="DTO\Requests\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
