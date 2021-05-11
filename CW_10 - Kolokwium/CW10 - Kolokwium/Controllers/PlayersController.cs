@@ -20,6 +20,12 @@ namespace CW10___Kolokwium.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public IActionResult GetPlayers()
+        {
+            return Ok(_service.getPlayers());
+        }
+
         [HttpPost("{id}")]
         public IActionResult AddPlayer(Player player, int teamId)
         {

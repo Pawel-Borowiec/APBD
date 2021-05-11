@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CW10___Kolokwium.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class newInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -103,6 +103,56 @@ namespace CW10___Kolokwium.Migrations
                         principalTable: "Teams",
                         principalColumn: "idTeam",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Championships",
+                columns: new[] { "idChampionship", "OfficialName", "Year" },
+                values: new object[,]
+                {
+                    { 1, "euro2016", 2016 },
+                    { 2, "mundial", 2012 },
+                    { 3, "euro2012", 2012 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Players",
+                columns: new[] { "IdPlayer", "DateOfBirth", "FirstName", "LastName" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1997, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Josef", "Zbaznik" },
+                    { 2, new DateTime(1999, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Pawlo", "Karsik" },
+                    { 3, new DateTime(2007, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hadol", "Ajtler" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Teams",
+                columns: new[] { "idTeam", "MaxAge", "TeamName" },
+                values: new object[,]
+                {
+                    { 1, 18, "Legia" },
+                    { 2, 20, "Lech" },
+                    { 3, 16, "Wisła" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PlayerTeams",
+                columns: new[] { "idPlayerTeam", "Comment", "NumOnShirt", "idPlayer", "idTeam" },
+                values: new object[,]
+                {
+                    { 1, null, 0, 1, 1 },
+                    { 2, null, 0, 2, 1 },
+                    { 3, null, 0, 3, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "championship_Teams",
+                columns: new[] { "idChampionshipTeam", "Score", "idChampionship", "idTeam" },
+                values: new object[,]
+                {
+                    { 1, 1f, 1, 1 },
+                    { 3, 3f, 3, 1 },
+                    { 2, 2f, 1, 2 }
                 });
 
             migrationBuilder.CreateIndex(

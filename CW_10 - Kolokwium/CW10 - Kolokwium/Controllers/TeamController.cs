@@ -21,9 +21,14 @@ namespace CW10___Kolokwium.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetTeamsOnChampionship()
+        public IActionResult GetTeamsOnChampionship(int id)
         {
-            return Ok();
+            return Ok(_service.GetTeamsOnChampionship(id));
+        }
+        [HttpGet]
+        public IActionResult GetTeams()
+        {
+            return Ok(_service.GetTeams());
         }
     }
 }

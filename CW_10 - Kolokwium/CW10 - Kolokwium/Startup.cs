@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CW10___Kolokwium
@@ -28,7 +29,10 @@ namespace CW10___Kolokwium
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IDBService, DBService>();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CW10___Kolokwium", Version = "v1" });

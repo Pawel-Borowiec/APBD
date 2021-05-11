@@ -18,8 +18,20 @@ namespace CW10___Kolokwium.Configurations
             {
                 new Championship
                 {
-                    idChampionship =1,
-                    OfficialName = "euro",
+                    idChampionship = 1,
+                    OfficialName = "euro2016",
+                    Year = 2016
+                },
+                new Championship
+                {
+                    idChampionship = 2,
+                    OfficialName = "mundial",
+                    Year = 2012
+                },
+                new Championship
+                {
+                    idChampionship = 3,
+                    OfficialName = "euro2012",
                     Year = 2012
                 }
             };

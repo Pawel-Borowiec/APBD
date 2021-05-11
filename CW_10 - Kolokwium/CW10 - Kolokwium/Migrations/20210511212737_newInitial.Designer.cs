@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CW10___Kolokwium.Migrations
 {
     [DbContext(typeof(TestDbContext))]
-    [Migration("20210511174957_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210511212737_newInitial")]
+    partial class newInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,6 +38,26 @@ namespace CW10___Kolokwium.Migrations
                     b.HasKey("idChampionship");
 
                     b.ToTable("Championships");
+
+                    b.HasData(
+                        new
+                        {
+                            idChampionship = 1,
+                            OfficialName = "euro2016",
+                            Year = 2016
+                        },
+                        new
+                        {
+                            idChampionship = 2,
+                            OfficialName = "mundial",
+                            Year = 2012
+                        },
+                        new
+                        {
+                            idChampionship = 3,
+                            OfficialName = "euro2012",
+                            Year = 2012
+                        });
                 });
 
             modelBuilder.Entity("CW10___Kolokwium.Models.Championship_Team", b =>
@@ -63,6 +83,29 @@ namespace CW10___Kolokwium.Migrations
                     b.HasIndex("idTeam");
 
                     b.ToTable("championship_Teams");
+
+                    b.HasData(
+                        new
+                        {
+                            idChampionshipTeam = 1,
+                            Score = 1f,
+                            idChampionship = 1,
+                            idTeam = 1
+                        },
+                        new
+                        {
+                            idChampionshipTeam = 2,
+                            Score = 2f,
+                            idChampionship = 1,
+                            idTeam = 2
+                        },
+                        new
+                        {
+                            idChampionshipTeam = 3,
+                            Score = 3f,
+                            idChampionship = 3,
+                            idTeam = 1
+                        });
                 });
 
             modelBuilder.Entity("CW10___Kolokwium.Models.Player", b =>
@@ -86,6 +129,29 @@ namespace CW10___Kolokwium.Migrations
                     b.HasKey("IdPlayer");
 
                     b.ToTable("Players");
+
+                    b.HasData(
+                        new
+                        {
+                            IdPlayer = 1,
+                            DateOfBirth = new DateTime(1997, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Josef",
+                            LastName = "Zbaznik"
+                        },
+                        new
+                        {
+                            IdPlayer = 2,
+                            DateOfBirth = new DateTime(1999, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Pawlo",
+                            LastName = "Karsik"
+                        },
+                        new
+                        {
+                            IdPlayer = 3,
+                            DateOfBirth = new DateTime(2007, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Hadol",
+                            LastName = "Ajtler"
+                        });
                 });
 
             modelBuilder.Entity("CW10___Kolokwium.Models.PlayerTeam", b =>
@@ -115,6 +181,29 @@ namespace CW10___Kolokwium.Migrations
                     b.HasIndex("idTeam");
 
                     b.ToTable("PlayerTeams");
+
+                    b.HasData(
+                        new
+                        {
+                            idPlayerTeam = 1,
+                            NumOnShirt = 0,
+                            idPlayer = 1,
+                            idTeam = 1
+                        },
+                        new
+                        {
+                            idPlayerTeam = 2,
+                            NumOnShirt = 0,
+                            idPlayer = 2,
+                            idTeam = 1
+                        },
+                        new
+                        {
+                            idPlayerTeam = 3,
+                            NumOnShirt = 0,
+                            idPlayer = 3,
+                            idTeam = 1
+                        });
                 });
 
             modelBuilder.Entity("CW10___Kolokwium.Models.Team", b =>
@@ -134,18 +223,38 @@ namespace CW10___Kolokwium.Migrations
                     b.HasKey("idTeam");
 
                     b.ToTable("Teams");
+
+                    b.HasData(
+                        new
+                        {
+                            idTeam = 1,
+                            MaxAge = 18,
+                            TeamName = "Legia"
+                        },
+                        new
+                        {
+                            idTeam = 2,
+                            MaxAge = 20,
+                            TeamName = "Lech"
+                        },
+                        new
+                        {
+                            idTeam = 3,
+                            MaxAge = 16,
+                            TeamName = "Wisła"
+                        });
                 });
 
             modelBuilder.Entity("CW10___Kolokwium.Models.Championship_Team", b =>
                 {
                     b.HasOne("CW10___Kolokwium.Models.Championship", "Championship")
-                        .WithMany()
+                        .WithMany("Championship_Teams")
                         .HasForeignKey("idChampionship")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CW10___Kolokwium.Models.Team", "Team")
-                        .WithMany()
+                        .WithMany("Championship_Teams")
                         .HasForeignKey("idTeam")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -158,13 +267,13 @@ namespace CW10___Kolokwium.Migrations
             modelBuilder.Entity("CW10___Kolokwium.Models.PlayerTeam", b =>
                 {
                     b.HasOne("CW10___Kolokwium.Models.Player", "Player")
-                        .WithMany()
+                        .WithMany("PlayerTeams")
                         .HasForeignKey("idPlayer")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CW10___Kolokwium.Models.Team", "Team")
-                        .WithMany()
+                        .WithMany("PlayerTeams")
                         .HasForeignKey("idTeam")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -172,6 +281,23 @@ namespace CW10___Kolokwium.Migrations
                     b.Navigation("Player");
 
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("CW10___Kolokwium.Models.Championship", b =>
+                {
+                    b.Navigation("Championship_Teams");
+                });
+
+            modelBuilder.Entity("CW10___Kolokwium.Models.Player", b =>
+                {
+                    b.Navigation("PlayerTeams");
+                });
+
+            modelBuilder.Entity("CW10___Kolokwium.Models.Team", b =>
+                {
+                    b.Navigation("Championship_Teams");
+
+                    b.Navigation("PlayerTeams");
                 });
 #pragma warning restore 612, 618
         }

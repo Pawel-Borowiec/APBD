@@ -15,11 +15,11 @@ namespace CW10___Kolokwium.Configurations
             builder.HasKey(key => key.idPlayerTeam);
             builder
                 .HasOne(x => x.Player)
-                .WithMany()
+                .WithMany(y => y.PlayerTeams)
                 .HasForeignKey(x => x.idPlayer);
             builder
                 .HasOne(x => x.Team)
-                .WithMany()
+                .WithMany(y => y.PlayerTeams)
                 .HasForeignKey(x => x.idTeam);
             builder.Property(x => x.Comment).HasMaxLength(300);
 
@@ -29,6 +29,18 @@ namespace CW10___Kolokwium.Configurations
                 {
                     idPlayerTeam = 1,
                     idPlayer =1,
+                    idTeam =1
+                },
+                new PlayerTeam
+                {
+                    idPlayerTeam = 2,
+                    idPlayer =2,
+                    idTeam =1
+                },
+                new PlayerTeam
+                {
+                    idPlayerTeam = 3,
+                    idPlayer =3,
                     idTeam =1
                 }
             };

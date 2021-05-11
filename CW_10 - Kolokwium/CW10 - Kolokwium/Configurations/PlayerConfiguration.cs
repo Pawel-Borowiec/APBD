@@ -22,7 +22,21 @@ namespace CW10___Kolokwium.Configurations
                     IdPlayer = 1,
                     FirstName = "Josef",
                     LastName = "Zbaznik",
-                    DateOfBirth = DateTime.Now
+                    DateOfBirth = Convert.ToDateTime("1997-01-01")
+                },
+                new Player
+                {
+                    IdPlayer = 2,
+                    FirstName = "Pawlo",
+                    LastName = "Karsik",
+                    DateOfBirth = Convert.ToDateTime("1999-01-01")
+                },
+                new Player
+                {
+                    IdPlayer = 3,
+                    FirstName = "Hadol",
+                    LastName = "Ajtler",
+                    DateOfBirth = Convert.ToDateTime("2007-09-01")
                 }
             };
             builder.HasData(players);

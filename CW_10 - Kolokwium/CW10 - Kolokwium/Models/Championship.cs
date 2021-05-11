@@ -11,5 +11,7 @@ namespace CW10___Kolokwium.Models
         public string OfficialName { get; set; }
         public int Year { get; set; }
 
+        public virtual ICollection<Championship_Team> Championship_Teams { get; set; } = new HashSet<Championship_Team>();
+
     }
 }

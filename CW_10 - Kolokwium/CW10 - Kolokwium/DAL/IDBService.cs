@@ -8,7 +8,10 @@ namespace CW10___Kolokwium.DAL
 {
     public interface IDBService
     {
-        public Task<IEnumerable<Team>> GetTeamsOnChampionship(int id);
+        public IEnumerable<object> GetTeamsOnChampionship(int id);
         public int AddPlayerToTeam(Player player, int teamId);
+        public IEnumerable<Player> getPlayers();
+
+        public IEnumerable<Team> GetTeams();
     }
 }

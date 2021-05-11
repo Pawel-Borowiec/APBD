@@ -43,22 +43,25 @@ namespace CW10___Kolokwium.DAL
             return 1;
         }
 
-        public Task<IEnumerable<Team>> GetTeamsOnChampionship(int id)
+        public IEnumerable<Player> getPlayers()
         {
-            var temp = _context.championship_Teams.Where(x => x.idChampionship == id).Select( n => new { n.idTeam, n.Score });
-            var temp2 = _context.Teams.Where(x => temp.Any(y => y.idTeam == x.idTeam)).ToList();
-            IEnumerable<TeamResponse> response = new List<TeamResponse>();
-            foreach( Team x in temp2)
-            {
-                TeamResponse temp3 = new TeamResponse();
-                temp3.idTeam = x.idTeam;
-                temp3.MaxAge = x.MaxAge;
-                temp3.TeamName = x.TeamName;
-            }
+            return _context.Players.ToList();
+        }
 
+        public IEnumerable<Team> GetTeams()
+        {
+            return _context.Teams.ToList();
+        }
 
-            return (Task<IEnumerable<Team>>)response;
-            
+        public IEnumerable<object> GetTeamsOnChampionship(int id)
+        {
+            var result = _context.championship_Teams
+                .Include(x => x.Team)
+                .Where(x => x.idChampionship==id)
+                .Select(x => new {idTeam = x.Team.idTeam, TeamName = x.Team.TeamName, MaxAge = x.Team.MaxAge, Score = x.Score  })
+                .OrderByDescending(x => x.Score)
+                .ToList();
+            return result;
         }
     }
 }

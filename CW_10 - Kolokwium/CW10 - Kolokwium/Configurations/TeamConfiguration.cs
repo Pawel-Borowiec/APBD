@@ -21,6 +21,18 @@ namespace CW10___Kolokwium.Configurations
                     idTeam = 1,
                     MaxAge = 18,
                     TeamName = "Legia"
+                },
+                new Team
+                {
+                    idTeam = 2,
+                    MaxAge = 20,
+                    TeamName = "Lech"
+                },
+                new Team
+                {
+                    idTeam = 3,
+                    MaxAge = 16,
+                    TeamName = "Wisła"
                 }
             };
             builder.HasData(teams);
