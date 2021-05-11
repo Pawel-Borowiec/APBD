@@ -17,12 +17,9 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="DAL\" />
     <Folder Include="DTO\Responses\" />
     <Folder Include="DTO\Requests\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Configurations\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

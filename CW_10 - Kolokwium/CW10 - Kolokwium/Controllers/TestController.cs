@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CW8.Controllers
+namespace CW10___Kolokwium.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountsController : ControllerBase
+    public class TestController : ControllerBase
     {
     }
 }
