@@ -1,4 +1,6 @@
-﻿using CW8.DTO.Requests;
+﻿using CW8.DAL;
+using CW8.DTO.Requests;
+using CW8.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,13 +21,14 @@ namespace CW8.Controllers
     public class AccountsController : ControllerBase
     {
 
-        private readonly IConfiguration _configuration;
+        private readonly IDbService _service;
 
 
-        public AccountsController(IConfiguration configuration)
+        public AccountsController(IDbService service)
         {
-            _configuration = configuration;
+            _service = service;
         }
+
         [Authorize]
         [HttpGet]
         public IActionResult GetStudents()
@@ -38,15 +41,23 @@ namespace CW8.Controllers
         {
             return Ok("Public");
         }
+
+        [AllowAnonymous]
+        [HttpGet("users")]
+        public IActionResult getAllUsers()
+        {
+            MyDbContext context = new MyDbContext();
+            return Ok(context.Users.ToList());
+        }
         [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult Login(LoginRequest loginRequest)
         {
+            SigningCredentials creds =_service.logUser(loginRequest);
             //AppUser user = .context.Users.Tolist.First();
             // if(user==null)
             // return NotFound();
             // }
-
             Claim[] userclaim = new[]
             {
                 new Claim(ClaimTypes.Name, "test"),
@@ -54,23 +65,29 @@ namespace CW8.Controllers
                 new Claim(ClaimTypes.Role, "admin"),
             };
 
-            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecretKey"]));
-            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
             JwtSecurityToken token = new JwtSecurityToken(
-                issuer: "https://localhost:5000",
-                audience: "https://localhost:5000",
+                issuer: "https://localhost:44353",
+                audience: "https://localhost:44353",
                 claims: userclaim,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: creds
                 );
+
+            //generate refresh token
+
+            //keya 32 bity
+
+            //login response z access tokenem
+
+
+
             // tu powinien być refresh token
             // 54 minuta
             return Ok(new
-                {
+            {
                 token = new JwtSecurityTokenHandler().WriteToken(token),
                 refreshToken = "refresh_token"
-                });
+            });
         }
     }
 }

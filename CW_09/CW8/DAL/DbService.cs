@@ -1,11 +1,16 @@
-﻿using CW8.Models;
+﻿using CW8.DTO.Requests;
+using CW8.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace CW8.DAL
@@ -13,7 +18,7 @@ namespace CW8.DAL
 
     public class DbService : IDbService
     {
-        private IConfiguration _configuration;
+        public readonly IConfiguration _configuration;
         private readonly MyDbContext _context = new MyDbContext();
 
         public DbService(IConfiguration configuration)
@@ -54,5 +59,33 @@ namespace CW8.DAL
             _context.SaveChangesAsync();
             return 0;
         }
+
+        public SigningCredentials logUser(LoginRequest request)
+        {
+            CheckPassword(request);
+
+            
+
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecretKey"]));
+            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            return creds;
+
+            
+        }
+
+        private void CheckPassword(LoginRequest request)
+        {
+            if(_context.Users.Where(x => x.Login.Equals(request.Login)).Count() == 0)
+            {
+                throw new Exception("There is no user with that nickname in database");
+            }
+            var user = _context.Users.Where(x => x.Login.Equals(request.Login)).First();
+            if (!user.Password.Equals(request.Password))
+            {
+                throw new Exception("Wrong Password");
+            }
+        }
+
     }
 }

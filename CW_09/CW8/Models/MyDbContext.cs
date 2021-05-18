@@ -24,6 +24,7 @@ namespace CW8.Models
         public DbSet<Prescription> Prescriptions { get; set; }
         public DbSet<Medicament> Medicaments { get; set; }
         public DbSet<Prescription_Medicament> Prescription_Medicaments { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,6 +40,7 @@ namespace CW8.Models
             modelBuilder.ApplyConfiguration(new PrescriptionConfiguration());
             modelBuilder.ApplyConfiguration(new MedicamentConfiguration());
             modelBuilder.ApplyConfiguration(new Prescription_MedicamentConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
         }
     }
