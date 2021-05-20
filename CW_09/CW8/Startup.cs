@@ -39,12 +39,12 @@ namespace CW8
             {
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = false,
-                    ValidateActor = false,
-                    ValidateLifetime = false,
-                    ClockSkew = TimeSpan.Zero,
-                    ValidIssuer = "https://localhost:5000",
-                    ValidAudience = "https://localhost:5000",
+                    ValidateIssuer = true, // walidacja osoby wystawiajacej token
+                    ValidateActor = true, // walidacja osoby, dla której token zosta³ wydany
+                    ValidateLifetime = true, // walidacja cyklu ¿ycia tokenu
+                    ClockSkew = TimeSpan.Zero, // margines b³êdu dla wygaœniêæia tokenu
+                    ValidIssuer = "https://localhost:44353", // poprawny wydawca tokenu
+                    ValidAudience = "https://localhost:44353", // poprawny odbiorca tokenu
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]))
                 };
             });
@@ -70,11 +70,13 @@ namespace CW8
 
             app.UseHttpsRedirection(); // Wymusza Https
 
-            app.UseRouting();
+            app.UseRouting(); 
 
-            app.UseAuthentication();
+            app.UseAuthentication(); // uwierzytelnienie
 
-            app.UseAuthorization();
+            app.UseAuthorization(); // sprawdzenie uprawnien
+
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

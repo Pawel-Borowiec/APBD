@@ -16,7 +16,7 @@ namespace CW8.Middlewares
         }
         public async Task Invoke(HttpContext context)
         {
-            // obrabianie
+            //sklejenie
             await _next(context);
         }
     }

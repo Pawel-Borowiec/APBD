@@ -1,6 +1,4 @@
-﻿
-
-using CW8.Configurations;
+﻿using CW8.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace CW8.Models

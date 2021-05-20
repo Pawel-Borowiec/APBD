@@ -1,4 +1,5 @@
-﻿using CW8.DTO.Requests;
+﻿using CW8.DTO;
+using CW8.Helpers;
 using CW8.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -80,12 +81,46 @@ namespace CW8.DAL
             {
                 throw new Exception("There is no user with that nickname in database");
             }
-            var user = _context.Users.Where(x => x.Login.Equals(request.Login)).First();
+            var user = _context.Users.Where(x => x.Login.Equals(request.Login)).FirstOrDefault();
             if (!user.Password.Equals(request.Password))
             {
                 throw new Exception("Wrong Password");
             }
         }
 
+        public void registerUser(RegisterRequest model)
+        {
+            var hashedPasswordAndSalt = SecurityHelpers.GetHashedPasswordAndSalt(model.Password);
+
+            var user = new User()
+            {
+                Email = model.Email,
+                Login = model.Login,
+                Password = hashedPasswordAndSalt.Item1,
+                Salt = hashedPasswordAndSalt.Item2,
+                RefreshToken = SecurityHelpers.GenerateRefreshToken(),
+                RefreshTokenExp = DateTime.Now.AddDays(1)
+            };
+
+            _context.Users.Add(user);
+            _context.SaveChanges();      
+        }
+
+        public SymmetricSecurityKey getSSKey()
+        {
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecretKey"]));
+        }
+
+        public void handleRefreshToken(User user)
+        {
+            user.RefreshToken = SecurityHelpers.GenerateRefreshToken();
+            user.RefreshTokenExp = DateTime.Now.AddDays(1);
+            _context.SaveChanges();
+        }
+
+        public string getLoginFromToken(string token)
+        {
+            return SecurityHelpers.GetUserIdFromAccessToken(token.Replace("Bearer ", ""), _configuration["SecretKey"]);
+        }
     }
 }

@@ -265,6 +265,9 @@ namespace CW8.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -275,29 +278,18 @@ namespace CW8.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenExp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Salt")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("UserId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = 1,
-                            Login = "admin",
-                            Password = "admin"
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            Login = "staszekpl",
-                            Password = "polska123"
-                        },
-                        new
-                        {
-                            UserId = 3,
-                            Login = "maksous",
-                            Password = "maksous"
-                        });
                 });
 
             modelBuilder.Entity("CW8.Models.Prescription", b =>

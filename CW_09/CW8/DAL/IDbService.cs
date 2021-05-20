@@ -1,4 +1,4 @@
-﻿using CW8.DTO.Requests;
+﻿using CW8.DTO;
 using CW8.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,5 +18,9 @@ namespace CW8.DAL
         public int UpdateDoctor(Doctor doctor);
         public Prescription GetPrescription(int Id);
         public SigningCredentials logUser(LoginRequest request);
+        public void registerUser(RegisterRequest model);
+        public SymmetricSecurityKey getSSKey();
+        public void handleRefreshToken(User user);
+        public string getLoginFromToken(string token);
     }
 }

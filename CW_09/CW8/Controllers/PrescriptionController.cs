@@ -1,4 +1,5 @@
 ﻿using CW8.DAL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace CW8.Controllers
 {
+    [Authorize]
     [Route("api/prescriptions")]
     [ApiController]
     public class PrescriptionController : ControllerBase
