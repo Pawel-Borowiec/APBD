@@ -22,5 +22,7 @@ namespace CW8.DAL
         public SymmetricSecurityKey getSSKey();
         public void handleRefreshToken(User user);
         public string getLoginFromToken(string token);
+        public User validateLoginRequest(LoginRequest loginRequest);
+        public User validateRefreshToken(RefreshTokenRequest refreshToken);
     }
 }

@@ -116,11 +116,42 @@ namespace CW8.DAL
             user.RefreshToken = SecurityHelpers.GenerateRefreshToken();
             user.RefreshTokenExp = DateTime.Now.AddDays(1);
             _context.SaveChanges();
+
         }
 
         public string getLoginFromToken(string token)
         {
             return SecurityHelpers.GetUserIdFromAccessToken(token.Replace("Bearer ", ""), _configuration["SecretKey"]);
+        }
+
+        public User validateLoginRequest(LoginRequest loginRequest)
+        {
+            User user = _context.Users.Where(u => u.Login == loginRequest.Login).FirstOrDefault();
+
+            string passwordHas = user.Password;
+            string curHashedPassword = SecurityHelpers.GetHashedPasswordWithSalt(loginRequest.Password, user.Salt);
+
+            if (!passwordHas.Equals(curHashedPassword))
+            {
+                throw new Exception($"User {loginRequest.Login}, has entered incorrect password");
+            }
+            return user;
+        }
+
+        public User validateRefreshToken(RefreshTokenRequest refreshToken)
+        {
+            User user = _context.Users.Where(u => u.RefreshToken == refreshToken.RefreshToken).FirstOrDefault();
+            if (user == null)
+            {
+                throw new SecurityTokenException("Invalid refresh token");
+            }
+
+            if (user.RefreshTokenExp < DateTime.Now)
+            {
+                throw new SecurityTokenException("Refresh token expired");
+            }
+
+            return user;
         }
     }
 }

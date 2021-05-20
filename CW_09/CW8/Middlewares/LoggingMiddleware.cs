@@ -8,7 +8,7 @@ namespace CW8.Middlewares
 {
     public class LoggingMiddleware
     {
-        private readonly RequestDelegate _next; // referencja na kolejny middleware
+        private readonly RequestDelegate _next;
 
         public LoggingMiddleware(RequestDelegate next)
         {
@@ -16,7 +16,6 @@ namespace CW8.Middlewares
         }
         public async Task Invoke(HttpContext context)
         {
-            //sklejenie
             await _next(context);
         }
     }
