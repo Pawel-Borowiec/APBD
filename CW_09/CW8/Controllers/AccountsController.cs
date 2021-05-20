@@ -46,6 +46,8 @@ namespace CW8.Controllers
         [HttpGet("users")]
         public IActionResult getAllUsers()
         {
+            string g = null;
+            g.ToLower();
             MyDbContext context = new MyDbContext();
             return Ok(context.Users.ToList());
         }

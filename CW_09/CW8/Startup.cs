@@ -66,9 +66,9 @@ namespace CW8
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CW8 v1"));
             }
 
-            app.UseMiddleware<LoggingMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>(); // Middleware na przechwytywanie b³êdów
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection(); // Wymusza Https
 
             app.UseRouting();
 

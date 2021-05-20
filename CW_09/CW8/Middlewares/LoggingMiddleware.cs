@@ -8,7 +8,7 @@ namespace CW8.Middlewares
 {
     public class LoggingMiddleware
     {
-        private readonly RequestDelegate _next;
+        private readonly RequestDelegate _next; // referencja na kolejny middleware
 
         public LoggingMiddleware(RequestDelegate next)
         {
