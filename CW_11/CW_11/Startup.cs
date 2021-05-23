@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MvcMovie.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace CW_11
 {
@@ -31,6 +33,7 @@ namespace CW_11
                     options.UseSqlServer(Configuration.GetConnectionString("MvcMovieContext")));
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -50,6 +53,15 @@ namespace CW_11
             app.UseRouting();
 
             app.UseAuthorization();
+
+            var defaultCulture = new CultureInfo("es-UY");
+            var localizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(defaultCulture),
+                SupportedCultures = new List<CultureInfo> { defaultCulture },
+                SupportedUICultures = new List<CultureInfo> { defaultCulture }
+            };
+            app.UseRequestLocalization(localizationOptions);
 
             app.UseEndpoints(endpoints =>
             {
