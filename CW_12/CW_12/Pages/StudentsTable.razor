@@ -1,0 +1,155 @@
+﻿@page "/students/{PageId:int}"
+@using CW_12.Models
+@inject NavigationManager navigationManager
+@inject IJSRuntime JSRuntime
+
+
+<h1>Students</h1>
+<button @onclick="AddNewStudent" class="btn btn-primary">Add new Students</button>
+<table id="students-table">
+    <tr>
+        <th>Avatar</th>
+        <th><span @onclick="@(() => SortTable("FirstName"))" class="sort-link">First Name</span></th>
+        <th><span @onclick="@(() => SortTable("LastName"))" class="sort-link">Last Name</span></th>
+        <th><span @onclick="@(() => SortTable("BirthDate"))" class="sort-link">Birth-Date</span></th>
+        <th><span @onclick="@(() => SortTable("Studies"))" class="sort-link">Studies</span></th>
+    </tr>
+    @foreach (var s in Students)
+    {
+        <tr>
+            <td>
+                Placeholder
+            </td>
+            <td>
+                @s.FirstName
+            </td>
+            <td>
+                @s.LastName
+            </td>
+            <td>
+                @s.BirthDate.Day/@s.BirthDate.Month/@s.BirthDate.Year
+            </td>
+            <td>
+                @s.Studies
+            </td>
+            <button @onclick="@(() => DeleteStudent(s))" class="btn btn-delete">Delete</button>
+        </tr>
+    }
+</table>
+<div class="pagination">
+    <a href="#">&laquo;</a>
+    @for(int i=0;i<(Students.Count/7)+1;i++)
+    {
+        <a href="students/@(i+1)">@(i+1)</a>
+    }
+    <a href="#">&raquo;</a>
+</div>
+
+@code {
+    [Parameter]
+    public int PageId { get; set; }
+
+    MyDbContext _context;
+    private List<Student> Students;
+    bool isAscending = false;
+
+    protected override void OnInitialized()
+    {
+
+        _context = new MyDbContext();
+        Students = new List<Student>
+{
+            new Student
+                {
+                    idStudent = 1,
+                    FirstName = "Adam",
+                    LastName = "Banan",
+                    BirthDate = Convert.ToDateTime("2000-05-02"),
+                    Studies = "Informatyka"
+                },
+                new Student
+                {
+                    idStudent = 2,
+                    FirstName = "Paweł",
+                    LastName = "Czerniak",
+                    BirthDate = Convert.ToDateTime("2001-05-02"),
+                    Studies = "Informatyka"
+                },
+                new Student
+                {
+                    idStudent = 3,
+                    FirstName = "Michał",
+                    LastName = "Zachaj",
+                    BirthDate = Convert.ToDateTime("2002-05-02"),
+                    Studies = "Kulturoznawsto"
+                },
+                new Student
+                {
+                    idStudent = 4,
+                    FirstName = "Rudolf",
+                    LastName = "Stronheim",
+                    BirthDate = Convert.ToDateTime("2001-02-22"),
+                    Studies = "Germanistyka"
+                },
+                new Student
+                {
+                    idStudent = 5,
+                    FirstName = "Zenek",
+                    LastName = "Kurczyk",
+                    BirthDate = Convert.ToDateTime("2004-05-12"),
+                    Studies = "Kulturoznawsto"
+                },
+                new Student
+                {
+                    idStudent = 6,
+                    FirstName = "Michał",
+                    LastName = "Parchaś",
+                    BirthDate = Convert.ToDateTime("2002-05-02"),
+                    Studies = "Kulturoznawsto"
+                },
+                new Student
+                {
+                    idStudent = 7,
+                    FirstName = "Michał",
+                    LastName = "Zachajewczyk",
+                    BirthDate = Convert.ToDateTime("2002-07-06"),
+                    Studies = "Obrona narodowa"
+                },
+                new Student
+                {
+                    idStudent = 8,
+                    FirstName = "Tytus",
+                    LastName = "Bomba",
+                    BirthDate = Convert.ToDateTime("1998-05-02"),
+                    Studies = "Obrona narodowa"
+                }
+        };
+
+    }
+
+    private async Task DeleteStudent(Student toRemove)
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete the student {toRemove.FirstName} {toRemove.LastName} from list?"))
+            return;
+        Students.Remove(toRemove);
+    }
+
+    private async Task AddNewStudent()
+    {
+       navigationManager.NavigateTo("/addnewstudent");
+    }
+    private async Task SortTable(string parameter)
+    {
+        if (!isAscending)
+        {
+            isAscending = true;
+            Students = Students.OrderBy(x => x.GetType().GetProperty(parameter).GetValue(x, null)).ToList();
+        }
+        else
+        {
+            isAscending = false;
+            Students = Students.OrderByDescending(x => x.GetType().GetProperty(parameter).GetValue(x, null)).ToList();
+        }
+    }
+
+}

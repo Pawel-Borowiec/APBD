@@ -1,0 +1,52 @@
+﻿@page "/addnewstudent"
+@using CW_12.Models
+@inject NavigationManager navigationManager
+<h2>Add New Student</h2>
+<EditForm Model="@Student" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p>
+        <label>
+            FirstName:
+            <InputText @bind-Value="Student.FirstName" />
+        </label>
+    </p>
+    <p>
+        <label>
+            LastName:
+            <InputText @bind-Value="Student.LastName" />
+        </label>
+    </p>
+    <p>
+        <label>
+            BirthDate:
+            <InputDate @bind-Value="Student.BirthDate" />
+        </label>
+    </p>
+    <p>
+        <label>
+           Studies:
+            <InputText @bind-Value="Student.Studies" />
+        </label>
+    </p>
+
+    <button type="submit" class="btn btn-primary">Add</button>
+    <button @onclick="ReturnToList" type="button" class="btn btn-primary">Return</button>
+</EditForm>
+@code {
+    private Student Student = new();
+    private EditContext editContext;
+
+    private async Task ReturnToList()
+    {
+        navigationManager.NavigateTo("/students/1");
+    }
+
+    private void HandleValidSubmit()
+    {
+
+        // Process the valid form
+    }
+
+
+}

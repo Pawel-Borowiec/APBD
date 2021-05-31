@@ -1,0 +1,54 @@
+﻿body {
+    background:red;
+}
+
+
+.btn-delete {
+    background: #eb0a29;
+    color: white;
+    padding: 10px;
+    margin: 20px;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+table {
+    inset: 10px
+}
+
+#students-table{
+    margin: 20px;
+}
+
+
+#students-table th {
+    background-color: #0069CC;
+    color: white;
+}
+
+.sort-link {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: dodgerblue;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+
