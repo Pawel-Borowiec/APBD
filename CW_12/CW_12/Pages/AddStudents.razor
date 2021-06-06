@@ -25,10 +25,18 @@
     </p>
     <p>
         <label>
-           Studies:
+            Studies:
             <InputText @bind-Value="Student.Studies" />
         </label>
     </p>
+    <p>
+        <label>
+            Avatar ( URL ):
+            <InputText @bind-Value="Student.Avatar" />
+        </label>
+        <img src="@Student.Avatar" width="100px" height="100px" />
+    </p>
+    
 
     <button type="submit" class="btn btn-primary">Add</button>
     <button @onclick="ReturnToList" type="button" class="btn btn-primary">Return</button>
