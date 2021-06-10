@@ -50,14 +50,16 @@
     public int PageId { get; set; }
 
     MyDbContext _context;
-    private List<Student> Students;
+    private List<Student> Students = new List<Student>();
     bool isAscending = false;
 
     protected override void OnInitialized()
     {
 
         _context = new MyDbContext();
-        Students = new List<Student>
+        if (Students.Count<1)
+            {
+            Students = new List<Student>
 {
             new Student
                 {
@@ -124,6 +126,8 @@
                     Studies = "Obrona narodowa"
                 }
         };
+        }
+
 
     }
 
@@ -136,7 +140,7 @@
 
     private async Task AddNewStudent()
     {
-       navigationManager.NavigateTo("/addnewstudent");
+        navigationManager.NavigateTo("/addnewstudent");
     }
     private async Task SortTable(string parameter)
     {
