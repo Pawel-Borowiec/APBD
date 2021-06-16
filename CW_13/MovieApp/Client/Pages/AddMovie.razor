@@ -1,0 +1,64 @@
+﻿@page "/addmovie"
+@using MovieApp.Shared.Models
+@using System.Text;
+@using System.Text.Json;
+@inject HttpClient httpClient
+<h3>AddMovie</h3>
+<div class="container">
+    <div class="leftsite">
+        <EditForm Model="@Movie">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <p>
+                <label>
+                    Title:
+                    <InputText @bind-Value="Movie.Title" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Summary:
+                    <InputText @bind-Value="Movie.Summary" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    In Theathers?:
+                    <InputCheckbox @bind-Value="Movie.InTheaters" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Release Date:
+                    <InputDate @bind-Value="Movie.ReleaseDate" />
+                </label>
+            </p>
+            <p>
+                <label>
+                    Poster ( link ):
+                    <InputText @bind-Value="Movie.Poster" />
+                </label>
+            </p>
+            <button @onclick="PostMovie" class="btn btn-primary">Add to database</button>
+            <button class="btn btn-primary">Return to list</button>
+        </EditForm>
+    </div>
+    <div class="rigthsite">
+        <img src="@Movie.Poster" width="90%" />
+    </div>
+</div>
+@code {
+    [Parameter]
+    public Movie Movie { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Movie = new Movie();
+    }
+    private async Task PostMovie()
+    {
+        string content = System.Text.Json.JsonSerializer.Serialize(Movie);
+        httpClient.PostAsJsonAsync("https://localhost:44311/api/movies", content);
+
+    }
+}

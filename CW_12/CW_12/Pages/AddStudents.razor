@@ -38,7 +38,7 @@
     </p>
     
 
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button  @onclick="AddStudent" type="submit" class="btn btn-primary">Add</button>
     <button @onclick="ReturnToList" type="button" class="btn btn-primary">Return</button>
 </EditForm>
 @code {
@@ -54,6 +54,13 @@
     {
 
         // Process the valid form
+    }
+    private void AddStudent()
+    {
+        MyDbContext _context = new MyDbContext();
+        _context.Add(Student);
+        _context.SaveChanges();
+        navigationManager.NavigateTo("/students/1");
     }
 
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MovieApp.Server.Services;
+using MovieApp.Shared.Models;
 using System.Threading.Tasks;
 
 
@@ -24,6 +25,18 @@ namespace MovieApp.Server.Controllers
         public async Task<IActionResult> GetMovies()
         {
             return Ok(await _dbService.GetMovies());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetMovieById(int id)
+        {
+            return Ok(await _dbService.GetMovie(id));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddMovie(Movie movie)
+        {
+            await _dbService.AddMovie(movie);
+            return Ok();
         }
     }
 }

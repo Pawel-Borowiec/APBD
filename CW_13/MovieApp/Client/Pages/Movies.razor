@@ -1,6 +1,7 @@
 ﻿@page "/movies"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject NavigationManager navigationManager
 @attribute [Authorize]
 @inject HttpClient httpClient
 
@@ -8,6 +9,7 @@
 <div>
     <h3>In theaters</h3>
     <MoviesList Movies="MoviesList" />
+    <button @onclick="AddNewMovie" class="btn btn-primary">Add new Movie</button>
 </div>
 
 @code {
@@ -31,5 +33,10 @@
         {
             //error
         }
+    }
+
+    private async Task AddNewMovie()
+    {
+        navigationManager.NavigateTo("/addmovie");
     }
 }

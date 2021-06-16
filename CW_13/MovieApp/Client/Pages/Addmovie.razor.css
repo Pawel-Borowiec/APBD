@@ -1,0 +1,15 @@
+﻿body {
+}
+.container {
+    flex-direction: row;
+    background-color: greenyellow;
+}
+.leftsite{
+    width: 500px;
+    background-color: darkgoldenrod
+}
+
+.rightsite{
+    width:400px;
+    background-color: aqua;
+}

@@ -15,7 +15,7 @@ namespace MovieApp.Server.Services
     public interface IMoviesDbService
     {
         Task<List<Movie>> GetMovies();
-        Task AddMovie();
+        Task AddMovie(Movie movie);
         Task<Movie> GetMovie(int movieId);
     }
 
@@ -28,14 +28,16 @@ namespace MovieApp.Server.Services
             _context = context;
         }
 
-        public Task AddMovie()
+        public Task AddMovie(Movie movie)
         {
-            throw new System.NotImplementedException();
+             _context.AddAsync(movie);
+            _context.SaveChangesAsync();
+            return null;
         }
 
         public Task<Movie> GetMovie(int movieId)
         {
-            throw new System.NotImplementedException();
+            return _context.Movies.Where(m => m.Id==movieId).FirstOrDefaultAsync();
         }
 
         public Task<List<Movie>> GetMovies()
