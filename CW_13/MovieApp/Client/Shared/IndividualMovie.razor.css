@@ -1,0 +1,9 @@
+﻿.buttons-movie {
+    justify-content: space-between;
+    background-color:pink;
+}
+.individual-movie-container {
+    width: min-content;
+    justify-content: center;
+    background-color: orangered;
+}

@@ -28,11 +28,10 @@ namespace MovieApp.Server.Services
             _context = context;
         }
 
-        public Task AddMovie(Movie movie)
+        public async Task AddMovie(Movie movie)
         {
-             _context.AddAsync(movie);
-            _context.SaveChangesAsync();
-            return null;
+            await _context.AddAsync(movie);
+            await _context.SaveChangesAsync();
         }
 
         public Task<Movie> GetMovie(int movieId)

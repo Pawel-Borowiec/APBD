@@ -1,9 +1,11 @@
 ﻿<div class="individual-movie-container">
-    <a href="@movieURL">
-        <img src="@Movie.Poster" alt="Poster" class="movie-poster" />
-    </a>
     <p><a href="@movieURL">@Movie.TitleBrief</a></p>
-    <div>
+    <a href="@movieURL">
+        <img src="@Movie.Poster" width="400" height="700" alt="Poster" class="movie-poster" />
+    </a>
+
+    <div class="buttons-movie">
+        <a class="btn btn-info" href="/movies/details/@Movie.Id">Details</a>
         <a class="btn btn-info" href="/movies/edit/@Movie.Id">Edit</a>
         <button type="button" class="btn btn-danger"
                 @onclick="@(() => DeleteMovie.InvokeAsync(Movie))">

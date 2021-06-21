@@ -58,7 +58,7 @@
     private async Task PostMovie()
     {
         string content = System.Text.Json.JsonSerializer.Serialize(Movie);
-        httpClient.PostAsJsonAsync("https://localhost:44311/api/movies", content);
+          httpClient.PostAsJsonAsync("https://localhost:44311/api/movies", content);
 
     }
 }
