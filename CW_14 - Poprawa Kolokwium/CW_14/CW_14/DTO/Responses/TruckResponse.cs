@@ -12,5 +12,6 @@ namespace CW_14.DTO.Responses
     public class TruckResponse
     {
         public FireTruck FireTruck { get; set; }
+        public List<ActionResponse> ActionsResponses { get; set; }
     }
 }

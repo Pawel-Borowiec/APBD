@@ -34,5 +34,11 @@ namespace CW_14.Controllers
                 return Ok("Poprawnię dodano datę zakończenia");
             }
         }
+        [HttpPost]
+        public IActionResult addAction(Models.Action action)
+        {
+            _service.AddNewAction(action);
+            return Ok("Dodano");
+        }
     }
 }
