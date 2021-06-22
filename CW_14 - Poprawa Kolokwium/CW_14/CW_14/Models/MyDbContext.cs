@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CW_14.Configurations;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,12 @@ namespace CW_14.Models
 
         }
 
+        public DbSet<Firefighter> Firefighters { get; set; }
+        public DbSet<Firefighter_Action> Firefighter_Actions { get; set; }
+        public DbSet<Action> Actions { get; set; }
+        public DbSet<FireTruck_Action> FireTruck_Actions { get; set; }
+        public DbSet<FireTruck> FireTrucks { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
@@ -29,7 +36,11 @@ namespace CW_14.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // modelBuilder.ApplyConfiguration();
+            modelBuilder.ApplyConfiguration(new ActionConfiguration());
+            modelBuilder.ApplyConfiguration(new FirefighterConfiguration());
+            modelBuilder.ApplyConfiguration(new FirefighterActionConfiguration());
+            modelBuilder.ApplyConfiguration(new FireTruckConfiguration());
+            modelBuilder.ApplyConfiguration(new FireTruckActionConfiguration());
 
         }
     }
