@@ -1,5 +1,5 @@
 # APBD
-#### Zbiorcze repozytorium dla zadań z przedmiotu Aplikacje Baz Danych realizowanego w ramach toku studiów. Polegał on głównie na pisaniu zapytań do bazy danych z wykorzystaniem zarówno rozwiązań niskopoziomowych jak SqlConnectio/SqlCommand jak i za pomocą Entity Framework. Pod koniec semestru były również realizowanie podstawy frameworka blazor w celu prezentacji danych. Na przestrzeni przedmiotu uzyskałem 96 na 100 możliwych punktów z przełożyło się na zwolnienie z egzaminu tak więc uważam repozytorium zawierające te zadania za porządnie wykonane
+#### Zbiorcze repozytorium dla zadań z przedmiotu Aplikacje Baz Danych realizowanego w ramach toku studiów. Polegał on głównie na pisaniu zapytań do bazy danych z wykorzystaniem zarówno rozwiązań niskopoziomowych jak SqlConnectio/SqlCommand jak i za pomocą Entity Framework. Pod koniec semestru były również realizowanie podstawy frameworka blazor w celu prezentacji danych. Na przestrzeni przedmiotu uzyskałem 96 na 100 możliwych do uzyskania punktów z przełożyło się na zwolnienie z egzaminu tak więc uważam repozytorium zawierające te zadania za porządnie wykonane
 
 ## Technologie użyte podczas realizacji tego przedmiotu:
 * C#
@@ -19,6 +19,8 @@
 * [Zadanie dziewiąte - JWT Token i Middleware\'y](#JWT-Token-i-Middleware\'y)
 * [Zadanie jedenaste - Wstęp do pracy z ASP.NET Core MVC](#Wstęp-do-pracy-z-ASP.NET-Core-MVC)
 * [Zadanie dwunaste - CRUD z wykorzystaniem Frameworka Blazor](#CRUD-z-wykorzystaniem-Frameworka-Blazor)
+* [Zadanie trzynaste - Praca z Blazorem po stronie klienta](#Praca-z-Blazorem-po-stronie-klienta)
+* [Zadanie dodatkowe - Refractoring kodu](#Refractoring-kodu)
 
 ## Crawler
 Zadanie polegające na pobraniu adresu strony internetowej poprzez parametry programu, znalezieniu za pomocą wyrażenia regularnego unikalnych maili w źródle strony oraz wyświetleniu ich
@@ -52,3 +54,9 @@ Wykonanie prostej strony korzystającej z danych dostępnych w lokalnej bazie da
 
 ## CRUD z wykorzystaniem Frameworka Blazor
 Zestaw będący wstępem do pracy z frameworkiem Blazor. Należało tutaj dla prostej kolekcji studentów zdefiniowanej jako lista( Osobiście zmieniłem źródło danych na lokalną bazę danych) utworzyć interfejs za pomocą frameworka Blazor, który pokazywał by wszystkie obecne w bazie danych rekordy oraz pozwalał zarówno na ich usuwanie jak i dodawanie nowych za pomocą dodatkowe formularza
+
+## Praca z Blazorem po stronie klienta
+Zestaw polegający na rozbiciu logiki na trzy projekty( Klient, Serwer i Shared) w celu zrealizowaniu podobnej funkcjonalności jak w zadaniu poprzednim. W dniu ustawieniu Repozytorium na publiczny widok (27.06.2021) zadanie to pozostaje niedokończone, ponieważ pod koniec semestru nie miałem czasu się nim zająć co przełozyło się na utratę jednych punktów na przestrzeni semestru. Zostanie ono dokończone podczas wakacji 2021.
+
+## Refractoring-kodu
+Dodatkowe zadanie pochodzące z początku semestru, które polegało na poprawieniu jakości otrzymanego kodu wraz z zasadami SOLID
