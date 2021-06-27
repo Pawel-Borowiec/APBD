@@ -1,4 +1,4 @@
-# APBD
+# APBD - Aplikacje Baz Danych
 #### Zbiorcze repozytorium dla zadań z przedmiotu Aplikacje Baz Danych realizowanego w ramach toku studiów. Polegał on głównie na pisaniu zapytań do bazy danych z wykorzystaniem zarówno rozwiązań niskopoziomowych jak SqlConnectio/SqlCommand jak i za pomocą Entity Framework. Pod koniec semestru były również realizowanie podstawy frameworka blazor w celu prezentacji danych. Na przestrzeni przedmiotu uzyskałem 96 na 100 możliwych do uzyskania punktów z przełożyło się na zwolnienie z egzaminu tak więc uważam repozytorium zawierające te zadania za porządnie wykonane
 
 ## Technologie użyte podczas realizacji tego przedmiotu:
