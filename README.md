@@ -4,6 +4,8 @@
 ## Technologie użyte podczas realizacji tego przedmiotu:
 * C#
 * .NET Framework
+* Entity Framework
+* LINQ
 * Blazor
 * ASP.NET Core MVC
 
