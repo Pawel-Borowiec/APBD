@@ -58,7 +58,7 @@ Wykonanie prostej strony korzystającej z danych dostępnych w lokalnej bazie da
 Zestaw będący wstępem do pracy z frameworkiem Blazor. Należało tutaj dla prostej kolekcji studentów zdefiniowanej jako lista( Osobiście zmieniłem źródło danych na lokalną bazę danych) utworzyć interfejs za pomocą frameworka Blazor, który pokazywał by wszystkie obecne w bazie danych rekordy oraz pozwalał zarówno na ich usuwanie jak i dodawanie nowych za pomocą dodatkowe formularza
 
 ## Praca z Blazorem po stronie klienta
-Zestaw polegający na rozbiciu logiki na trzy projekty( Klient, Serwer i Shared) w celu zrealizowaniu podobnej funkcjonalności jak w zadaniu poprzednim. W dniu ustawieniu Repozytorium na publiczny widok (27.06.2021) zadanie to pozostaje niedokończone, ponieważ pod koniec semestru nie miałem czasu się nim zająć co przełozyło się na utratę jednych punktów na przestrzeni semestru. Zostanie ono dokończone podczas wakacji 2021.
+Zestaw polegający na rozbiciu logiki na trzy projekty( Klient, Serwer i Shared) w celu zrealizowaniu podobnej funkcjonalności jak w zadaniu poprzednim. W dniu ustawieniu Repozytorium na publiczny widok (27.06.2021) zadanie to pozostaje niedokończone, ponieważ pod koniec semestru nie miałem czasu się nim zająć co przełozyło się na utratę jedynych punktów na przestrzeni semestru przez co finalnie z przedmiotu miałem 96/100 punktów a nie 100/100. Zostanie ono dokończone podczas wakacji 2021.
 
 ## Refractoring-kodu
 Dodatkowe zadanie pochodzące z początku semestru, które polegało na poprawieniu jakości otrzymanego kodu wraz z zasadami SOLID
